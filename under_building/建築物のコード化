@@ -1,3 +1,10 @@
 建築物をコードにする方法.
 
   1.必要なライブラリのインポート
+from gdpc import Editor, Block, geometry, Transform
+をインポートする.
+それぞれ,
+Editor:ブロックの設置,調査等の操作を行う最も基本のライブラリ
+Block:ブロック情報を処理するためのライブラリ
+geometry:一括設置を行うライブラリ
+Transform:基本座標変換,向き回転を行うライブララリ
