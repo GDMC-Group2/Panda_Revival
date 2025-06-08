@@ -1,10 +1,10 @@
 from gdpc import Editor, Block, geometry, Transform
 import time
 import random
-from under_build import under_build_base,place_door,place_bed,place_pot
+from under_build import under_build_base,place_door,place_bed,place_pot,summon_animal
 
 
-def under_apartment(editor,coor):
+def under_apartment(editor,coor,base_coor,b_rota,c_rota):
     #建材を変更できる
     #wood
     #piller
@@ -22,7 +22,7 @@ def under_apartment(editor,coor):
     piller=random.choice(piller_list)
     wall=random.choice(wall_list)
 
-    with editor.pushTransform(Transform(coor)):
+    with editor.pushTransform(Transform(coor,rotation=b_rota)):
         geometry.placeCuboid(editor,[0,0,0],[12,0,12],Block(floor_wood))
 
         geometry.placeCuboid(editor,[0,1,1],[0,5,11],Block(wall)) 
@@ -134,6 +134,21 @@ def under_apartment(editor,coor):
         interior(editor,[7,1,11])
         inner_light(editor,[7,3,7],choice_wood)
         inner_light(editor,[11,3,11],choice_wood)
+
+
+
+        #パンダ
+        if(random.random()<0.25):
+            summon_animal(editor,[3,2,3],base_coor,c_rota,"panda","panda")
+        if(random.random()<0.25):
+            summon_animal(editor,[3,2,9],base_coor,c_rota,"panda","panda")
+        if(random.random()<0.25):
+            summon_animal(editor,[9,2,9],base_coor,c_rota,"panda","panda")
+        if(random.random()<0.25):
+            summon_animal(editor,[9,2,3],base_coor,c_rota,"panda","panda")
+
+
+
 
 def on_table(editor,coor):
     #机の上に置くもの

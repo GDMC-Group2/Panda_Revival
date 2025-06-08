@@ -2,13 +2,13 @@ from gdpc import Editor, Block, geometry, Transform
 import time
 import random
 from under_build import under_build_base,place_stand,place_frame,place_frame_up,\
-place_door,place_bed,place_pot
+place_door,place_bed,place_pot,summon_animal
 
 
-def under_park_1(editor,coor):
+def under_park_1(editor,coor,base_coor,b_rota,c_rota):
     #原点座標系の算出
     #コケ広場
-    with editor.pushTransform(Transform(coor)):
+    with editor.pushTransform(Transform(coor,rotation=b_rota)):
         geometry.placeCuboid(editor,[0,0,0],[12,0,12],Block("moss_block"))
 
         #花壇
@@ -64,6 +64,12 @@ def under_park_1(editor,coor):
         editor.placeBlock([7,4,6],Block("oak_log",{"axis":"x"}))
         editor.placeBlock([5,3,6],Block("lantern",{"hanging":"true"}))
         editor.placeBlock([7,3,6],Block("lantern",{"hanging":"true"}))
+
+        #パンダ
+        if(random.random()<0.5):
+            summon_animal(editor,[4,2,6],base_coor,c_rota,"panda","panda")
+        if(random.random()<0.5):
+            summon_animal(editor,[8,2,6],base_coor,c_rota,"panda","panda")
 
 
 

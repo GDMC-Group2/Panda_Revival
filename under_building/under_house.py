@@ -1,8 +1,9 @@
 from gdpc import Editor, Block, geometry, Transform
 import time
 import random
-from under_build import under_build_base,place_door,place_bed,place_pot,place_paint
+from under_build import under_build_base,place_door,place_bed,place_pot,place_paint,summon_animal
 from under_apartment import under_apartment
+
 
 
 
@@ -10,11 +11,9 @@ from under_apartment import under_apartment
 color_list=["black","gray","light_gray","blue","green","cyan","red","purple",
         "brown","orange","lime","yellow","light_blue","magenta","pink","white"]
 
-def under_house_1(editor,coor,base_coor,rotation):
-    sum_coor = [x + y for x, y in zip(coor, base_coor)]
-    #原点座標系の算出
+def under_house_1(editor,coor,base_coor,b_rota,c_rota):
 
-    with editor.pushTransform(Transform(coor)):
+    with editor.pushTransform(Transform(coor,rotation=b_rota)):
         #外の装飾
         geometry.placeCuboid(editor,[0,1,0],[0,1,6],Block("bricks"))
         geometry.placeCuboid(editor,[0,2,0],[0,2,6],Block("birch_leaves",{"persistent":"true"}))
@@ -121,7 +120,7 @@ def under_house_1(editor,coor,base_coor,rotation):
         editor.placeBlock([5,5,6],Block("spruce_trapdoor",{"facing":"east","half":"top","open":"true"}))
         editor.placeBlock([4,5,7],Block("spruce_trapdoor",{"facing":"south","half":"top","open":"true"}))
         editor.placeBlock([4,4,6],Block("lantern",{"hanging":"true"}))
-        place_paint(editor,[2,3,4],sum_coor,rotation,"east","fern")
+        place_paint(editor,[2,3,4],base_coor,c_rota,"east","fern")
 
         #キッチン
         geometry.placeCuboid(editor,[2,1,2],[6,1,5],Block("lime_carpet"))
@@ -149,10 +148,16 @@ def under_house_1(editor,coor,base_coor,rotation):
         geometry.placeCuboid(editor,[8,4,6],[9,4,6],Block("bookshelf"))
         editor.placeBlock([10,4,6],Block("large_amethyst_bud",{"facing":"up"}))
 
-def under_house_2(editor,coor,base_coor,rotation):
-    sum_coor = [x + y for x, y in zip(coor, base_coor)]
-    #原点座標系の算出
-    with editor.pushTransform(Transform(coor)):
+        #パンダ
+
+        if(random.random()<0.7):
+            summon_animal(editor,[4,2,4],base_coor,c_rota,"panda","panda")
+
+
+
+def under_house_2(editor,coor,base_coor,b_rota,c_rota):
+
+    with editor.pushTransform(Transform(coor,rotation=b_rota)):
         #外の装飾   
         geometry.placeCuboid(editor,[0,0,0],[0,0,12],Block("grass_block"))
         geometry.placeCuboid(editor,[0,0,6],[0,0,7],Block("gravel"))
@@ -364,7 +369,7 @@ def under_house_2(editor,coor,base_coor,rotation):
         geometry.placeCuboid(editor,[6,1,1],[6,2,3],Block("barrel",{"facing":"west"}))
         geometry.placeCuboid(editor,[6,4,1],[6,4,2],Block("bookshelf"))
         editor.placeBlock([6,4,3],Block("lantern"))
-        place_paint(editor,[7,2,2],sum_coor,rotation,"east","pond")
+        place_paint(editor,[7,2,2],base_coor,c_rota,"east","pond")
 
         #植物机
         geometry.placeCuboid(editor,[2,1,10],[2,1,11],Block("polished_andesite_stairs",{"facing":"west","half":"top"}))
@@ -383,6 +388,11 @@ def under_house_2(editor,coor,base_coor,rotation):
         inner_light(editor,[11,2,6],"bamboo")
         inner_light(editor,[6,2,11],"bamboo")
         editor.placeBlock([2,4,2],Block("lantern",{"hanging":"true"}))
+
+        if(random.random()<0.7):
+            summon_animal(editor,[4,2,4],base_coor,c_rota,"panda","panda")
+
+
 
 
 def outer_light(editor,coor,choice_wood):

@@ -8,6 +8,36 @@
 from gdpc import Editor, Block, geometry, Transform
 #from Block_check import block_check,colored
 import time
+import random
+
+
+def base_transform(coor,base_coor,rotation):
+    #用途:基本座標を回転を加味して移動させる.
+    #Minecraft座標系の移動
+    #move_coor:eastを向いている時の座標の移動値
+    trans_coor=[0,0,0]
+    if(rotation==0): #east
+        x=coor[0]
+        y=coor[1]
+        z=coor[2]
+    elif(rotation==1):#"north"
+        x=-coor[2]
+        y=coor[1]
+        z=coor[0]
+    elif(rotation==2):#"west"
+        x=-coor[0]
+        y=coor[1]
+        z=-coor[2]
+    elif(rotation==3):#"south"
+        x=coor[2]
+        y=coor[1]
+        z=-coor[0]
+
+    trans_coor[0]=base_coor[0]+x
+    trans_coor[1]=base_coor[1]+y
+    trans_coor[2]=base_coor[2]+z
+
+    return trans_coor
 
 
 def under_build_base(editor,coor,rotation,size,wall_Block = Block("stone")):
@@ -18,10 +48,17 @@ def under_build_base(editor,coor,rotation,size,wall_Block = Block("stone")):
     #wall_block:壁の材質(変更したい場合のみ入力)
     #道は後で作るので気にしない
     #方策:石で埋めて,空間を確保
-
+    
     
     geometry.placeCuboid(editor,[-1 ,0,-1],[size[0],size[1]+2,size[2]],wall_Block)
     geometry.placeCuboid(editor,[0 ,1,0],[size[0]-1,size[1],size[2]-1],Block("air"))
+
+def fix_rotation(b_lota,c_lota):
+    #用途:b_lota(建築に使用する方角)とc_lota(コマンドに使用する方角)を修正する
+    #回転数を加算
+    templota=b_lota+c_lota
+    c_lota=templota%4
+    return c_lota
 
 def place_frame(editor,coor,base_coor,rotation,direction,item):
     #用途:フレームの設置
@@ -87,7 +124,6 @@ def place_frame(editor,coor,base_coor,rotation,direction,item):
         NBT=f"{{Facing:{place_dire}}}"
 
     editor.runCommand(f"summon item_frame {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {NBT}")
-
 
 def place_stand(editor,coor,base_coor,rotation,direction,boots="",leggings="",chestplate="",helmet=""):
     #用途:アーマースタンドの設置
@@ -293,6 +329,7 @@ def place_paint(editor,coor,base_coor,rotation,direction,name):
 
 
 
+
 def place_frame(editor,coor,base_coor,rotation,direction,item):
     #用途:フレームの設置
     #direction:向き(NASWで入力)
@@ -358,3 +395,40 @@ def place_frame(editor,coor,base_coor,rotation,direction,item):
 
     editor.runCommand(f"summon item_frame {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {NBT}")
 
+
+def summon_animal(editor,coor,base_coor,rotation,animal,name=False):
+    if(rotation==0): #east
+        x=coor[0]
+        y=coor[1]
+        z=coor[2]
+    elif(rotation==1):#"north"
+        x=-coor[2]
+        y=coor[1]
+        z=coor[0]
+    elif(rotation==2):#"west"
+        x=-coor[0]
+        y=coor[1]
+        z=-coor[2]
+    elif(rotation==3):#"south"
+        x=coor[2]
+        y=coor[1]
+        z=-coor[0]
+    if(name==False):
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z}")
+    elif(name=="panda"):
+        panda_name=panda_name_list()
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {{CustomName:{panda_name}}}")
+    else:
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {{CustomName:{name}}}")
+
+    
+def panda_name_list():
+    #用途:パンダの名前を渡す
+
+    panda_name_list=["Meilin","Xiaobo","Baozi","Lingling","Xuebao","Zhuzhu","Lianhua","Feifei","Haitao","Qiqi",
+    "Yuelong","Meifeng","Xiaotao","Shuangshuang","Huahua","Zhenzhen","Dongmei","Huanhuan","Longwei","Yinyin",
+    "Xiangxiang","Tianbao","Nianzu","Lanlan","Chunhua","Guangli","Pingping","Rongrong","Mingliang","Yunbao",
+    "Zhaozhao","Haoran","Fengyi","Qiaoqiao","Jingjing","Xinxin","Lulu","Changle","Ruomei","Boqin"]
+
+    panda_name=random.choice((panda_name_list))
+    return panda_name

@@ -5,24 +5,15 @@
 from gdpc import Editor, Block, geometry, Transform
 from Block_check import block_check,colored
 import time
+from under_build import base_transform,fix_rotation
 from under_base import under_basement
-
-editor=Editor(buffering=True,bufferLimit=1024)
-
-
-#座標系
-
-XS=900
-YS=0
-ZS=900
-XL,YL,ZL=128,256,128
-coor_basis=[XS,YS,ZS]
-
-command_build_area= f"setbuildarea {XS} {-64} {ZS} {XS+XL} {YS+YL} {ZS+ZL}"
-
-editor.runCommand(command_build_area)
-worldSlice = editor.loadWorldSlice()
-
+from under_city import under_city
+from under_farm import under_farm_big
+from under_plantation import under_plantation
+from under_bamboo_farm import under_bamboo_farm
+from warehouse import Warehouse
+from under_barrack import under_barrack
+from under_blacksmith import under_blacksmith
 
 
 
@@ -57,7 +48,7 @@ def main_shaft_rail_floar(editor):
     editor.placeBlock([-2,0,-3],Block("powered_rail",{"shape":"east_west"}))
     editor.placeBlock([-3,1,-3],Block("birch_button",{"face":"floor","facing":"west"}))
 
-def main_shaft_rail(editor,boost_count):
+def main_shaft_rail(editor,coor,boost_count):
     if(boost_count%3==1):
         editor.placeBlock([0+coor[0],-1+coor[1],-3],Block("powered_rail",{"shape":"ascending_west"}))
         editor.placeBlock([0+coor[0],-2+coor[1],-3],Block("stone"))
@@ -83,77 +74,177 @@ def under_center_base_frame(editor,coor,size):
 
 
 
-SEA_LEVEL=62#海抜の高さ
-DEEP_LAYER=-20#深層岩の出現する高さ (y=8)
+def under_main(editor,coor_basis,city_center):
 
 
-city_center=[1000,173,1000] #一時的に決定.
+    map_center=[XS+XL/2,62,ZS+ZL/2] #マップの中央部分.Y座標は使わないけれど取得方法に注意する
 
-#一応city_centerがbuild_area内にあるかの確認.多分最終的にはいらない
+    #方向と距離の取得
+    under_xl=map_center[0]-city_center[0]
+    under_zl=map_center[2]-city_center[2]
 
-if(coor_basis[0] > city_center[0] or coor_basis[0]+XL< city_center[0] or 
-   coor_basis[2] > city_center[2] or coor_basis[2]+ZL< city_center[2]):
-    print("center is not in build area")
-    exit()
+    #トンネルを掘る方向の決定. 入口からトンネル方向を向いた時の方角
 
-map_center=[XS+XL/2,SEA_LEVEL,ZS+ZL/2] #マップの中央部分.Y座標は使わないけれど取得方法に注意する
-
-#方向と距離の取得
-under_xl=map_center[0]-city_center[0]
-under_zl=map_center[2]-city_center[2]
-
-#トンネルを掘る方向の決定. 入口からトンネル方向を向いた時の方角
-
-if(abs(under_xl) >= abs(under_zl)):
-    if(under_xl >= 0):
-        tunnel_direction= 0 #"east"
+    if(abs(under_xl) >= abs(under_zl)):
+        if(under_xl >= 0):
+            tunnel_direction= 0 #"east"
+        else:
+            tunnel_direction= 2 #"west"
     else:
-        tunnel_direction= 2 #"west"
-else:
-    if(under_zl >= 0):
-        tunnel_direction= 3 #"south"
-    else:
-        tunnel_direction= 1 #"north"
+        if(under_zl >= 0):
+            tunnel_direction= 3 #"south"
+        else:
+            tunnel_direction= 1 #"north"
 
-#坑道の掘り方
-#1*5マスで掘る
-#高さ:床面(1):階段 2-4空気 5:石
-
-block_check(city_center,"red")
-rotation=tunnel_direction
-transform=Transform(translation=city_center, rotation=rotation)
-editor.transform.push(transform)
-coor=[0,0,0]
-main_shaft_floar(editor)
-main_shaft_rail_floar(editor)
+    #坑道の掘り方
+    #1*5マスで掘る
+    #高さ:床面(1):階段 2-4空気 5:石
 
 
-stairs_count=50
-size=[13,7,13]
-height=6
-for i in range(stairs_count):
-    if(i==stairs_count-1): #処理が最後なら部屋を作る
-        under_center_base_frame(editor,coor,size)
-        under_center_base_air(editor,coor,size)
-    main_shaft_part(editor,coor,height)
-    main_shaft_wall(editor,coor,height,i)
-    main_shaft_rail(editor,i)
-    coor[0]+=1
-    coor[1]-=1
-print(coor)
+    block_check(city_center,"red")
+    rotation=tunnel_direction
+    
+    #with内部のrotationは,引継ぎが発生する
+    #基準向きから見てどちらかで考える
 
-coor[2]=coor[2]-6
-
-under_basement(editor,coor,0,[29,10,13])
-
-#一層建築物の設置
-#とりあえずbaseの設置
-#向きに注意
+    with editor.pushTransform(Transform(city_center,rotation=rotation)):
+        coor=[0,0,0]
+        base_coor=[0,0,0]
+        main_shaft_floar(editor)
+        main_shaft_rail_floar(editor)
 
 
+        stairs_count=50
+        size=[13,7,13]
+        height=6
+        for i in range(stairs_count):
+            if(i==stairs_count-1): #処理が最後なら部屋を作る
+                under_center_base_frame(editor,coor,size)
+                under_center_base_air(editor,coor,size)
+            main_shaft_part(editor,coor,height)
+            main_shaft_wall(editor,coor,height,i)
+            main_shaft_rail(editor,coor,i)
+            coor[0]+=1
+            coor[1]-=1
+        coor[2]=coor[2]-6
 
-editor.transform.pop(transform)
+        base_coor=base_transform(coor,city_center,rotation)
+        b_rota=0
+        c_rota=fix_rotation(b_rota,rotation)
+        under_basement(editor,coor,base_coor,b_rota,c_rota,[29,10,13])
 
-editor.flushBuffer()
+        #一層建築物の設置
+        #とりあえずbaseの設置
+        #向きに注意
+        #決定論で作る
+        base_coor=base_transform([49,-49,0],city_center,rotation)
+        base_rota=0
+        c_rota=fix_rotation(base_rota,rotation)
+        set_under_first(editor,[49,-49,0],base_coor,base_rota,c_rota)
+
+
+        #2階部分(city)の設置
+        coor[0]=93
+        coor[1]=-69
+        coor[2]=-58
+
+
+        base_coor=base_transform(coor,city_center,rotation)
+        base_rota=0
+        c_rota=fix_rotation(base_rota,rotation)
+        #print(base_coor)
+        under_city(editor,coor,base_coor,base_rota,c_rota)
+        editor.flushBuffer()
+
+def set_under_first(editor,coor,base_coor,base_rota,rotation):
+    #用途 基準位置のbaseの[0,1,6]に移動,1層の設計を行う
+        with editor.pushTransform(Transform(coor,rotation=base_rota)):
+            base_coor_farm=base_transform([0,-1,13],base_coor,rotation)
+            b_rota=0
+            c_rota=fix_rotation(b_rota,rotation)
+            under_farm_big(editor,[0,-1,13],base_coor_farm,b_rota,c_rota)
+            build_tunnel(editor,[8,0,7],1,5) 
+
+            base_coor_plan=base_transform([21,-1,50],base_coor,rotation)
+            b_rota=1
+            c_rota=fix_rotation(b_rota,rotation)
+            under_plantation(editor,[21,-1,50],base_coor_plan,b_rota,c_rota)
+            build_tunnel(editor,[16,0,41],1,8)
+
+            base_coor_bamboo=base_transform([39,-1,21],base_coor,rotation)
+            b_rota=0
+            c_rota=fix_rotation(b_rota,rotation)
+            under_bamboo_farm(editor,[39,-1,21],base_coor_bamboo,b_rota,c_rota)
+            build_tunnel(editor,[28,0,26],0,10)
+
+            base_coor_ware=base_transform([-22,-1,22],base_coor,rotation)
+            b_rota=2
+            c_rota=fix_rotation(b_rota,rotation)
+            Warehouse(editor,-22,-1,24,base_coor_ware,b_rota,c_rota)
+            build_tunnel(editor,[-1,0,25],2,7)
+
+            base_coor_barrack=base_transform([6,-1,-20],base_coor,rotation)
+            b_rota=3
+            c_rota=fix_rotation(b_rota,rotation)
+            under_barrack(editor,[6,-1,-20],base_coor_barrack,b_rota,c_rota)
+            build_tunnel(editor,[6,0,-7],3,12)
+
+            base_coor_smith=base_transform([7,-1,-37],base_coor,rotation)
+            b_rota=3
+            c_rota=fix_rotation(b_rota,rotation)
+            under_blacksmith(editor,[7,-1,-37],base_coor_smith,b_rota,c_rota)
+            build_tunnel(editor,[12,0,-32],3,4) 
+
+
+def build_tunnel(editor,coor,rotation,length):
+    #用途:道の作成
+    with editor.pushTransform(Transform(coor,rotation=rotation)):
+        #トンネルの左下を基準にする
+        geometry.placeCuboid(editor,[1,0,-1],[length,2,-3],Block("stone"))
+        geometry.placeCuboid(editor,[1,0,3],[length,2,5],Block("stone"))
+        geometry.placeCuboid(editor,[1,3,0],[length,4,2],Block("stone"))
+        geometry.placeCuboid(editor,[1,-1,0],[length,-1,2],Block("stone"))
+        geometry.placeCuboid(editor,[0,0,0],[length,2,2],Block("air"))
+        for i in range(length):
+            if(i!=0 and i%3==0):
+                editor.placeBlock([i,1,3],Block("bamboo_trapdoor",{"facing":"south","open":"true"}))
+                editor.placeBlock([i,1,4],Block("torch"))
+                editor.placeBlock([i,1,-1],Block("bamboo_trapdoor",{"facing":"north","open":"true"}))
+                editor.placeBlock([i,1,-2],Block("torch"))
+
+
+
+    
+
+
+
+city_center=[900,85,1050] #一時的に決定.
+
+editor=Editor(buffering=True,bufferLimit=4096)
+
+
+#座標系
+
+XS=800
+YS=0
+ZS=800
+XL,YL,ZL=300,256,300
+coor_basis=[XS,YS,ZS]
+
+#command_build_area= f"setbuildarea {XS} {-64} {ZS} {XS+XL} {YS+YL} {ZS+ZL}"
+
+#editor.runCommand(command_build_area)
+#worldSlice = editor.loadWorldSlice()
+
+start=time.time()
+under_main(editor,coor_basis,city_center)
+end=time.time()
+
+time_diff=end-start
+print(time_diff)
+
+
+
+
 
 

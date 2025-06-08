@@ -1,38 +1,30 @@
 from gdpc import Editor, Block, geometry, Transform
 import time
 import random
-from under_build import under_build_base,place_stand,place_frame,place_frame_up
+from under_build import under_build_base,place_stand,place_frame,place_frame_up,summon_animal
 
 
-#under_farm_big
-#設置位置:1層(生産層)
-#size:3*1(45*9*13)
 
-editor=Editor()
-
-coor=[100,-61,270]
-rotation=0
-size=[13,7,13]
-def under_blacksmith(editor,coor,rotation,size):
-    transform=Transform(translation=coor, rotation=rotation)
-    editor.transform.push(transform)
-    under_build_base(editor,coor,rotation,size)
-    geometry.placeCuboid(editor,[0,0,0],[12,0,12],Block("polished_andesite"))
-    for i in range(2):
-        for j in range(2):
-            geometry.placeCuboid(editor,[0+i*8,0,0+j*8],[4+i*8,0,4+j*8],Block("polished_granite"))
-            geometry.placeCuboid(editor,[0+i*9,0,0+j*9],[3+i*9,0,3+j*9],Block("polished_diorite"))
-    big_furnace(editor)
-    forge(editor)
-    ore(editor)
-    display(editor,coor,rotation)
-    editor.placeBlock([4,1,4],Block("cobblestone_wall"))
-    editor.placeBlock([4,2,4],Block("lantern"))
-    editor.placeBlock([8,1,4],Block("cobblestone_wall"))
-    editor.placeBlock([8,2,4],Block("lantern"))
-    editor.placeBlock([8,1,8],Block("cobblestone_wall"))
-    editor.placeBlock([8,2,8],Block("lantern"))
-
+def under_blacksmith(editor,coor,base_coor,build_rotation,rotation,size=[13,7,13]):
+    with editor.pushTransform(Transform(coor,rotation=build_rotation)):
+        under_build_base(editor,coor,rotation,size)
+        geometry.placeCuboid(editor,[0,0,0],[12,0,12],Block("polished_andesite"))
+        for i in range(2):
+            for j in range(2):
+                geometry.placeCuboid(editor,[0+i*8,0,0+j*8],[4+i*8,0,4+j*8],Block("polished_granite"))
+                geometry.placeCuboid(editor,[0+i*9,0,0+j*9],[3+i*9,0,3+j*9],Block("polished_diorite"))
+        big_furnace(editor)
+        forge(editor)
+        ore(editor)
+        display(editor,base_coor,rotation)
+        editor.placeBlock([4,1,4],Block("cobblestone_wall"))
+        editor.placeBlock([4,2,4],Block("lantern"))
+        editor.placeBlock([8,1,4],Block("cobblestone_wall"))
+        editor.placeBlock([8,2,4],Block("lantern"))
+        editor.placeBlock([8,1,8],Block("cobblestone_wall"))
+        editor.placeBlock([8,2,8],Block("lantern"))
+        for i in range(3):
+            summon_animal(editor,[6,2,6],base_coor,rotation,"panda","panda")
 
 def ore(editor,ore_type="raw_iron_block"):
     geometry.placeCuboid(editor,[9,1,8],[12,1,8],Block("spruce_trapdoor",{"facing":"north","half":"bottom","open":"true"}))
@@ -127,10 +119,10 @@ def display(editor,coor,rotation):
 
     geometry.placeCuboid(editor,[9,1,-1],[12,4,-1],Block("polished_tuff"))
     geometry.placeCuboid(editor,[13,1,0],[13,4,3],Block("polished_tuff"))
-    place_stand(editor,[12.5,1,0.5],coor,rotation,"west","diamond_boots","diamond_leggings","diamond_chestplate","diamond_helmet")
-    place_stand(editor,[12.5,1,1.5],coor,rotation,"west","chainmail_boots","chainmail_leggings","chainmail_chestplate","chainmail_helmet")
-    place_stand(editor,[12.5,1,2.5],coor,rotation,"west","iron_boots","iron_leggings","iron_chestplate","iron_helmet")
-    place_stand(editor,[12.5,1,3.5],coor,rotation,"west","chainmail_boots","chainmail_leggings","chainmail_chestplate","chainmail_helmet")
+    place_stand(editor,[12,1,0],coor,rotation,"west","diamond_boots","diamond_leggings","diamond_chestplate","diamond_helmet")
+    place_stand(editor,[12,1,1],coor,rotation,"west","chainmail_boots","chainmail_leggings","chainmail_chestplate","chainmail_helmet")
+    place_stand(editor,[12,1,2],coor,rotation,"west","iron_boots","iron_leggings","iron_chestplate","iron_helmet")
+    place_stand(editor,[12,1,3],coor,rotation,"west","chainmail_boots","chainmail_leggings","chainmail_chestplate","chainmail_helmet")
     place_frame(editor,[9,2,0],coor,rotation,"south","iron_sword")
     place_frame(editor,[10,2,0],coor,rotation,"south","iron_pickaxe")
     place_frame(editor,[11,2,0],coor,rotation,"south","bucket")
@@ -142,8 +134,4 @@ def display(editor,coor,rotation):
     place_frame_up(editor,[10,2,2],coor,rotation,"diamond_pickaxe",True)
     editor.placeBlock([12,4,0],Block("birch_slab",{"type":"top"}))
     editor.placeBlock([12,5,0],Block("lantern"))
-
-
-under_blacksmith(editor,coor,rotation,size)
-
 

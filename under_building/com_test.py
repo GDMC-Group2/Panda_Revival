@@ -5,73 +5,6 @@ import random
 
 
 
-def place_frame(editor,coor,base_coor,rotation,direction,item):
-    #用途:フレームの設置
-    #direction:向き(NASWで入力)
-    #rotation:設置系の向き
-
-    #east:x=+X z=+Z dire=0 #"east"
-    #south:x=+Z z=-X dire=3  #"south"
-    #west:x=-X z=-Z dire=2 #"west"
-    #north:x=-Z z=+X dire=1 #"north"
-    place_dire=0
-    if(rotation==0): #east
-        x=coor[0]
-        y=coor[1]
-        z=coor[2]
-        if(direction=="south"): #右向き
-            place_dire=3 
-        elif(direction=="west"): #後ろ向き
-            place_dire=4 
-        elif(direction=="north"): #左向き
-            place_dire=2 
-        elif(direction=="east"): #正面
-            place_dire=5 
-    elif(rotation==1):#"north"
-        x=-coor[2]
-        y=coor[1]
-        z=coor[0]
-        if(direction=="south"):#右向き
-            place_dire=4 
-        elif(direction=="west"):#後ろ向き
-            place_dire=2 
-        elif(direction=="north"):#左向き
-            place_dire=5 
-        elif(direction=="east"):#正面
-            place_dire=3 
-    elif(rotation==2):#"west"
-        x=-coor[0]
-        y=coor[1]
-        z=-coor[2]
-        if(direction=="south"):
-            place_dire=2 
-        elif(direction=="west"):
-            place_dire=5 
-        elif(direction=="north"):
-            place_dire=3 
-        elif(direction=="east"):
-            place_dire=4 
-    elif(rotation==3):#"south"
-        x=coor[2]
-        y=coor[1]
-        z=-coor[0]
-        if(direction=="south"):
-            place_dire=5
-        elif(direction=="west"):
-            place_dire=3
-        elif(direction=="north"):
-            place_dire=4
-        elif(direction=="east"):
-            place_dire=2
-    if item:
-        NBT=f"{{Facing:{place_dire},Item:{{id:{item}}}}}"
-    else:
-        NBT=f"{{Facing:{place_dire}}}"
-
-    editor.runCommand(f"summon item_frame {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {NBT}")
-
-
-
 def place_stand(editor,coor,base_coor,rotation,direction,boots="",leggings="",chestplate="",helmet=""):
     #用途:アーマースタンドの設置
     #east:x=+X z=+Z dire=0 #"east"
@@ -229,7 +162,76 @@ def place_paint(editor,coor,base_coor,rotation,direction,name):
 
     editor.runCommand(f"summon painting {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {{facing:{place_dire},variant:{name}}}")
 
-# editor=Editor()
+
+
+
+def place_frame(editor,coor,base_coor,rotation,direction,item):
+    #用途:フレームの設置
+    #direction:向き(NASWで入力)
+    #rotation:設置系の向き
+
+    #east:x=+X z=+Z dire=0 #"east"
+    #south:x=+Z z=-X dire=3  #"south"
+    #west:x=-X z=-Z dire=2 #"west"
+    #north:x=-Z z=+X dire=1 #"north"
+    place_dire=0
+    if(rotation==0): #east
+        x=coor[0]
+        y=coor[1]
+        z=coor[2]
+        if(direction=="south"): #右向き
+            place_dire=3 
+        elif(direction=="west"): #後ろ向き
+            place_dire=4 
+        elif(direction=="north"): #左向き
+            place_dire=2 
+        elif(direction=="east"): #正面
+            place_dire=5 
+    elif(rotation==1):#"north"
+        x=-coor[2]
+        y=coor[1]
+        z=coor[0]
+        if(direction=="south"):#右向き
+            place_dire=4 
+        elif(direction=="west"):#後ろ向き
+            place_dire=2 
+        elif(direction=="north"):#左向き
+            place_dire=5 
+        elif(direction=="east"):#正面
+            place_dire=3 
+    elif(rotation==2):#"west"
+        x=-coor[0]
+        y=coor[1]
+        z=-coor[2]
+        if(direction=="south"):
+            place_dire=2 
+        elif(direction=="west"):
+            place_dire=5 
+        elif(direction=="north"):
+            place_dire=3 
+        elif(direction=="east"):
+            place_dire=4 
+    elif(rotation==3):#"south"
+        x=coor[2]
+        y=coor[1]
+        z=-coor[0]
+        if(direction=="south"):
+            place_dire=5
+        elif(direction=="west"):
+            place_dire=3
+        elif(direction=="north"):
+            place_dire=4
+        elif(direction=="east"):
+            place_dire=2
+    if item:
+        NBT=f"{{Facing:{place_dire},Item:{{id:{item}}}}}"
+    else:
+        NBT=f"{{Facing:{place_dire}}}"
+
+    editor.runCommand(f"summon item_frame {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {NBT}")
+
+
+editor=Editor()
 
 # base_coor=[70,-61,250]
 # rotation=3
@@ -238,6 +240,40 @@ def place_paint(editor,coor,base_coor,rotation,direction,name):
 # editor.transform.push(transform)
 # geometry.placeCuboid(editor,[3,1,-1],[3,4,1],Block("polished_diorite"))
 # place_paint(editor,[2,3,0],[70,-61,250],rotation,facing,"fern")
+#/give @p written_book[written_book_content={title:"test",author:"test",pages:["test"]}] 
+
+
+
+
+#中身入りの本の作り方
+text="Chapter One: Scattered Houses -- Origin and Unity\\\\n\\\\nIn an ancient world inhabited solely by pandas, living conditions were primitive and dispersed. A young girl named Zhuxin, full of love and wisdom, led the pandas in organizing a cohesive community. She encouraged everyone to work together, using local resources to transform scattered houses into an orderly village. This new community not only improved their living conditions but also strengthened the bonds and cooperation among the pandas.  For a photo of this era, please visit the following URL tinyurl.com/pandaVision1"
+title="test2"
+data_test=f"{{Items:[{{Slot:13b,count:1,components:{{\"minecraft:written_book_content\":{{author:\"test\",pages:[{{raw:'\"{text}\"'}}],title:{{raw:{title}}}}}}},count:1,id:\"minecraft:written_book\"}}]}}"
+
+print(data_test)
+
+
+
+editor.placeBlock([62,173,98],Block("chest",{"facing":"east"},data=data_test))
+print(editor.getBlock([62,173,98]))
+
+chest1 = Block(
+    "chest",
+    {"facing":"south"},
+    data=f"{{Items:[{{Slot:13b,count:1,components:{{\"minecraft:written_book_content\":{{author:\"test\",pages:[{{raw:'\"{text}\"'}}],title:{{raw:{title}}}}}}},count:1,id:\"minecraft:written_book\"}}]}}"
+)
+
+editor.placeBlock([65,173,98],chest1)
+
+
+#editor.runCommand("give ryokucya2 written_book")
+
+
+
+
+
+
+
 #パンダ柄のはた
 # minecraft:white_wall_banner[facing=west]{patterns:[{color:"black",pattern:"minecraft:flower"},
 # {color:"white",pattern:"minecraft:half_horizontal_bottom"},

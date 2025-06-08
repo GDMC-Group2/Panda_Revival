@@ -1,13 +1,13 @@
 from gdpc import Editor, Block, geometry, Transform
 import time
 import random
-from under_build import under_build_base,place_door,place_bed,place_pot,place_paint
+from under_build import under_build_base,place_door,place_bed,place_pot,place_paint,summon_animal
 from under_apartment import under_apartment
 
 
-def under_well(editor,coor):
+def under_well(editor,coor,base_coor,b_rota,c_rota):
     #床
-    with editor.pushTransform(Transform(coor)):
+    with editor.pushTransform(Transform(coor,rotation=b_rota)):
         geometry.placeCuboid(editor,[0,0,5],[3,0,7],Block("smooth_stone"))
         geometry.placeCuboid(editor,[5,0,0],[7,0,3],Block("smooth_stone"))
         geometry.placeCuboid(editor,[5,0,9],[7,0,12],Block("smooth_stone"))
@@ -99,11 +99,13 @@ def under_well(editor,coor):
         geometry.placeCuboid(editor,[5,0,8],[7,-2,8],stone_list)
         geometry.placeCuboid(editor,[8,0,5],[8,-2,7],stone_list)
         geometry.placeCuboid(editor,[5,-3,5],[7,-3,7],stone_list)
+        geometry.placeCuboid(editor,[5,0,5],[7,-1,7],Block("air"))
         geometry.placeCuboid(editor,[5,-2,5],[7,-2,7],Block("water"))
 
 
-
-
+    #パンダ
+        if(random.random()<0.2):
+            summon_animal(editor,[1,2,1],base_coor,c_rota,"panda","panda")
 def light(editor,coor):
     editor.placeBlock(coor,Block("cobblestone_wall"))
     editor.placeBlock([coor[0],coor[1]+1,coor[2]],Block("lantern"))

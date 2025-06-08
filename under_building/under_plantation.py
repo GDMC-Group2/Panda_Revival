@@ -1,39 +1,36 @@
 from gdpc import Editor, Block, geometry, Transform
 import time
 import random
-from under_build import under_build_base
+from under_build import under_build_base,summon_animal
 
 
 #under_farm_big
 #設置位置:1層(生産層)
 #size:3*1(45*9*13)
 
-editor=Editor()
-
 coor=[100,-61,250]
 rotation=0
 size=[45,9,13]
-def under_plantation(editor,coor,rotation,size):
-    transform=Transform(translation=coor, rotation=rotation)
-    editor.transform.push(transform)
-    under_build_base(editor,coor,rotation,size)
-    for i in range(7):
-        for j in range(2):
-            editor.placeBlock([4+i*6,0,3+j*6],Block("dirt"))
-            place_tree(editor,[4+i*6,1,3+j*6])
-            editor.placeBlock([4+i*6,9,3+j*6],Block("chain",{"axis":"y"}))
-            editor.placeBlock([4+i*6,8,3+j*6],Block("lantern",{"hanging":"true"}))
-    for i in range(8):
-        for j in range(3):
-            editor.placeBlock([1+i*6,1,0+j*6],Block("torch"))
+def under_plantation(editor,coor,base_coor,build_rotation,rotation,size=[45,9,13]):
+    with editor.pushTransform(Transform(coor,rotation=build_rotation)):
+        under_build_base(editor,coor,rotation,size)
+        for i in range(7):
+            for j in range(2):
+                editor.placeBlock([4+i*6,0,3+j*6],Block("dirt"))
+                place_tree(editor,[4+i*6,1,3+j*6])
+                editor.placeBlock([4+i*6,9,3+j*6],Block("chain",{"axis":"y"}))
+                editor.placeBlock([4+i*6,8,3+j*6],Block("lantern",{"hanging":"true"}))
+        for i in range(8):
+            for j in range(3):
+                editor.placeBlock([1+i*6,1,0+j*6],Block("torch"))
 
-    editor.placeBlock([0,1,0],Block("chest",{"facing":"east","type":"left"}))
-    editor.placeBlock([0,1,1],Block("chest",{"facing":"east","type":"right"}))
-    editor.placeBlock([0,2,0],Block("chest",{"facing":"east","type":"left"}))
-    editor.placeBlock([0,2,1],Block("chest",{"facing":"east","type":"right"}))
-    geometry.placeCuboid(editor,[0,1,2],[0,2,3],Block("barrel",{"facing":"east"}))
-
-
+        editor.placeBlock([0,1,0],Block("chest",{"facing":"east","type":"left"}))
+        editor.placeBlock([0,1,1],Block("chest",{"facing":"east","type":"right"}))
+        editor.placeBlock([0,2,0],Block("chest",{"facing":"east","type":"left"}))
+        editor.placeBlock([0,2,1],Block("chest",{"facing":"east","type":"right"}))
+        geometry.placeCuboid(editor,[0,1,2],[0,2,3],Block("barrel",{"facing":"east"}))
+        for i in range(3):
+            summon_animal(editor,[21,1,6],base_coor,rotation,"panda","panda")
 
 
 def place_tree(editor,coor,log_type = "birch"):
@@ -56,5 +53,4 @@ def place_tree(editor,coor,log_type = "birch"):
     else:
         editor.placeBlock([coor[0],coor[1],coor[2]],sapling)
 
-under_plantation(editor,coor,rotation,size)
 
