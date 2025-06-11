@@ -1,5 +1,5 @@
 from gdpc import Editor, Block,geometry,Transform
-from under_build import place_bed
+from under_building.under_build import place_bed
 
 def museum1(editor,x,y,z,base_coor,rotation):
     with editor.pushTransform(Transform([x,y,z],rotation=rotation)):

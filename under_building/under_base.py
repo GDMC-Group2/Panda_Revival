@@ -5,8 +5,7 @@
 #大きさ2*1(29*10*13)
 
 from gdpc import Editor, Block, geometry, Transform
-import time
-from under_build import under_build_base, place_frame
+from under_building.under_build import under_build_base, place_frame
 
 
 

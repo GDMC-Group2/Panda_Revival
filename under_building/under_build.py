@@ -6,7 +6,7 @@
 #各建築物関数→基準作成→各建築物の実体
 
 from gdpc import Editor, Block, geometry, Transform
-#from Block_check import block_check,colored
+from under_building.Block_check import block_check,colored
 import time
 import random
 
@@ -40,7 +40,7 @@ def base_transform(coor,base_coor,rotation):
     return trans_coor
 
 
-def under_build_base(editor,coor,rotation,size,wall_Block = Block("stone")):
+def under_build_base(editor,coor,rotation,size,wall_Block = "stone"):
     #用途:エリアのぶち抜きと壁の作成
     #coor:基準座標 coor=[x,y,z]
     #rotation:向き,transformに使用
@@ -50,7 +50,7 @@ def under_build_base(editor,coor,rotation,size,wall_Block = Block("stone")):
     #方策:石で埋めて,空間を確保
     
     
-    geometry.placeCuboid(editor,[-1 ,0,-1],[size[0],size[1]+2,size[2]],wall_Block)
+    geometry.placeCuboid(editor,[-1 ,0,-1],[size[0],size[1]+2,size[2]],Block(wall_Block))
     geometry.placeCuboid(editor,[0 ,1,0],[size[0]-1,size[1],size[2]-1],Block("air"))
 
 def fix_rotation(b_lota,c_lota):

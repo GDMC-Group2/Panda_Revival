@@ -1,7 +1,7 @@
 from gdpc import Editor, Block, geometry, Transform
 import time
 import random
-from under_build import under_build_base,place_door,place_bed,place_pot,summon_animal
+from under_building.under_build import under_build_base,place_door,place_bed,place_pot,summon_animal
 
 
 def under_apartment(editor,coor,base_coor,b_rota,c_rota):
