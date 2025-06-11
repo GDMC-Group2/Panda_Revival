@@ -1,13 +1,13 @@
 from gdpc import Editor, Block, geometry, Transform
 import time
 import random
-from under_build import under_build_base,place_door,place_bed,place_pot,base_transform,summon_animal,fix_rotation
-from under_apartment import under_apartment
-from under_house import under_house_1 ,under_house_2
-from under_well import under_well
-from under_park import under_park_1
-from museum import museum1
-from panda_statue import panda_statue
+from under_building.under_build import under_build_base,place_door,place_bed,place_pot,base_transform,summon_animal,fix_rotation
+from under_building.under_apartment import under_apartment
+from under_building.under_house import under_house_1 ,under_house_2
+from under_building.under_well import under_well
+from under_building.under_park import under_park_1
+from under_building.museum import museum1
+from under_building.panda_statue import panda_statue
 
 # editor=Editor()
 

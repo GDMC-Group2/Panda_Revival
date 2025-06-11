@@ -1,16 +1,13 @@
 from gdpc import Editor, Block, geometry, Transform
 import time
 import random
-from under_build import under_build_base,summon_animal
+from under_building.under_build import under_build_base,summon_animal
 
 
 #under_farm_big
 #設置位置:1層(生産層)
 #size:3*1(45*9*13)
 
-coor=[100,-61,250]
-rotation=0
-size=[45,9,13]
 def under_plantation(editor,coor,base_coor,build_rotation,rotation,size=[45,9,13]):
     with editor.pushTransform(Transform(coor,rotation=build_rotation)):
         under_build_base(editor,coor,rotation,size)
