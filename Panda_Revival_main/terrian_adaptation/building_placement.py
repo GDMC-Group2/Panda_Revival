@@ -1,6 +1,6 @@
 from Building import hotel, house1, house2, house3, house4, Farm, Tower, Pavilion, store, well, wall, river, bridge,blacksmith,honey_farm,basement
 from gdpc import Editor, Block
-import time
+from time import *
 
 CoverList = [
     'store1_n',
@@ -107,7 +107,7 @@ def placeBuildings(editor,buildingDict, area, height):
         if building == 'house4_w':
             house4.house4(editor,[area[0]+location[0]+10,height,area[1]+location[1]+10],2)
         #テスト用
-            time.sleep(3)
+        sleep(3)
 
 def placeMainRoad(editor,x,y,z,l,f):
     y = y-1
@@ -177,3 +177,4 @@ def placeCity(editor,buildingMap, buildingDict, area, height,q_id,isMaxArea = 0)
         if buildArea >= 1000:
             setSurface(editor,buildingMap, area, height, q_id)
         placeBuildings(editor,buildingDict, area, height)
+

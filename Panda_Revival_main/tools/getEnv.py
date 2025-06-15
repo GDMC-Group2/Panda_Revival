@@ -38,10 +38,9 @@ def calcGoodHeightmap(worldSlice):
                     heightmap[x, z] -= 1
                 else:
                     break
-    print(cnt/(area[2]*area[3]))
+    print("water rate:",cnt/(area[2]*area[3]))
     if (cnt/(area[2]*area[3]))<0.8: #水が全体の8割を越えたら処理を専用の物に
         flag = False
     else:
-        print("ocean!!!!!!!") #一旦強制終了(後で消す)
-        exit()
+        print("Flag!!!")
     return np.array(np.minimum(hm_mbnl, heightmap)),chikeyi,flag

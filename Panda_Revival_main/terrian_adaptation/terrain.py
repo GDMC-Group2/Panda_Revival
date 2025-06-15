@@ -2,7 +2,7 @@ from copy import deepcopy
 from collections import Counter
 import sys
 sys.setrecursionlimit(65536)
-from gdpc import Editor, Block
+from gdpc import Editor, Block,geometry
 from time import *
 
 
@@ -318,15 +318,16 @@ def setSameHeight(editor,heightmap, buildArea, block_id):
         for y in range(len(heightmap[0])):
             diff = maxH - heightmap[x][y]
             if diff > 0:
-                for i in range(diff):
-                    # print(buildArea[0]+x, heightmap[x][y]+i, buildArea[1]+y)
-                    editor.placeBlock((buildArea[0]+x, heightmap[x][y]+i, buildArea[1]+y), Block(block_id))
+                geometry.placeCuboid(editor,[buildArea[0]+x, heightmap[x][y], buildArea[1]+y],[buildArea[0]+x, heightmap[x][y]+diff, buildArea[1]+y],Block(block_id))
+                # for i in range(diff):
+                #     editor.placeBlock((buildArea[0]+x, heightmap[x][y]+i, buildArea[1]+y), Block(block_id))
             elif diff <= 0:
                 for i in range(-diff):
                     # print(buildArea[0]+x, heightmap[x][y]+i, buildArea[1]+y)
                     editor.placeBlock((buildArea[0]+x, heightmap[x][y]-1-i, buildArea[1]+y), Block('air'))
-                editor.placeBlock((buildArea[0]+x, heightmap[x][y]-1+diff, buildArea[1]+y), Block(block_id))
-
+                editor.placeBlock((buildArea[0]+x, maxH, buildArea[1]+y), Block('air'))
+                editor.placeBlock((buildArea[0]+x, maxH-1, buildArea[1]+y), Block(block_id))
+    editor.flushBuffer()
     end_time=time()
     print('setSameHeight done')
     print("time:",end_time-begin_time)

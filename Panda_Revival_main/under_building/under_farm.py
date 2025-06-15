@@ -61,7 +61,7 @@ def under_farm_big(editor,coor,base_coor,build_rotation,rotation,size=[29,6,29])
         place_mushroom(editor,mushroom_coor,"red")
 
         #スイカ,かぼちゃ畑
-        geometry.placeCuboid(editor,[22,0,16],[28,0,20],Block("polished_granite"))
+        geometry.placeCuboid(editor,[22,0,16],[28,0,20],Block("dirt"))
         geometry.placeCuboid(editor,[22,0,17],[28,0,19],Block("farmland",{"moisture":"7"}))
         geometry.placeCuboid(editor,[22,0,18],[28,0,18],Block("water"))
         editor.placeBlock([21,1,17],Block("torch"))

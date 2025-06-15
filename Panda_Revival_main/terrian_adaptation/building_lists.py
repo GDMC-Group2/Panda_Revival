@@ -12,10 +12,10 @@ BuildingSizeLists = [
     'house3_s':(20,23),
     'house3_e':(23,20),
     'house3_w':(23,20),
-    'house4_n':(14,19),
-    'house4_s':(14,19),
-    'house4_e':(19,14),
-    'house4_w':(19,14),
+    'house4_n':(19,14),
+    'house4_s':(19,14),
+    'house4_e':(14,19),
+    'house4_w':(14,19),
     'store1_n':(19,12),
     'store2_n':(19,12),
     'store3_n':(19,12),
@@ -35,8 +35,8 @@ BuildingSizeLists = [
     'pavilion_w':(18,17),
     'well':(3,3),
     'farm':(43,43),
-    'honey_farm_n':(11,15),
-    'honey_farm_e':(15,11),
+    'honey_farm_n':(15,11),
+    'honey_farm_e':(11,15),
     'basement':(3,3)
  },
  {#1
@@ -52,10 +52,10 @@ BuildingSizeLists = [
     'house3_s':(20,23),
     'house3_e':(23,20),
     'house3_w':(23,20),
-    'house4_n':(14,19),
-    'house4_s':(14,19),
-    'house4_e':(19,14),
-    'house4_w':(19,14),
+    'house4_n':(19,14),
+    'house4_s':(19,14),
+    'house4_e':(14,19),
+    'house4_w':(14,19),
     'honey_farm_n':(11,15), #test用
     'honey_farm_e':(15,11),
     'basement':(3,3)
@@ -64,25 +64,25 @@ BuildingSizeLists = [
     'house1_n':(21,16),
     'house2_n':(35,30),
     'house3_n':(19,23),
-    'house4_n':(14,19)
+    'house4_n':(19,14)
  },
  {#3
     'house1_s':(21,16),
     'house2_s':(35,30),
     'house3_s':(19,23),
-    'house4_s':(14,19)
+    'house4_s':(19,14)
  },
  {#4
     'house1_e':(16,21),
     'house2_e':(30,35),
     'house3_e':(23,19),
-    'house4_e':(19,14)
+    'house4_e':(14,19)
  },
  {#5
     'house1_w':(16,21),
     'house2_w':(30,35),
     'house3_w':(23,19),
-    'house4_w':(19,14)
+    'house4_w':(14,19)
  },
  {#6
     'tower':(31,31),

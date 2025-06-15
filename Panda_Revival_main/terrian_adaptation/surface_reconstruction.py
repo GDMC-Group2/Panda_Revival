@@ -1,5 +1,5 @@
 from copy import deepcopy
-from gdpc import Editor, Block, WorldSlice,Box
+from gdpc import Editor, Block, WorldSlice,Box,geometry
 from glm import  ivec3
 from time import *
 
@@ -65,9 +65,10 @@ def RemoveTrees(editor,worldSlice,area,heightmap,heightmapWithTrees):
                         count+=1
                     else:
                         break
-                for i in range(heightDiff[x][z]):
+                #for i in range(heightDiff[x][z]):
                     # print(area[0]+x, heightmap[x][y]+i, area[1]+y)
-                    editor.placeBlock((area[0]+x, heightmap[x][z]-count+i, area[1]+z), Block('air'))
+                geometry.placeCuboid(editor,[area[0]+x, heightmap[x][z]-count, area[1]+z],[area[0]+x, heightmap[x][z]-count+heightDiff[x][z]-1, area[1]+z], Block('air'))
+                    #editor.placeBlock((area[0]+x, heightmap[x][z]-count+i, area[1]+z), Block('air'))
     end_time=time()
     print('RemoveTrees done time:',end_time - begin_time)
 
