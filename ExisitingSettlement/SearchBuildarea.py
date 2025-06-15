@@ -86,6 +86,7 @@ class SearchBuildArea():
             for one in centers_ncd:
                 m.append((one[0], one[1]))
             centers_sorted = SortCenters.sort(m)
+            print(centers_sorted)
             for i in range(len(centers_sorted) - 1):
                 print('-' * 30)
                 start = (int(centers_sorted[i][0]), int(centers_sorted[i][1]))

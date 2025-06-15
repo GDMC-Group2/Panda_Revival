@@ -10,12 +10,12 @@ def flower_garden(editor,x,y,z,pro,facing):
     if(facing=='n'):
         for xx in range(13):
             for zz in range(9):
-                if("air" in editor.getBlock([x+1+xx,y,z+1+zz]) and pro>random.random()): #そこに何も置かれていない,かつ確率を通ったら
+                if(pro>random.random()):
                     editor.placeBlock((x+1+xx,y,z+1+zz),Block(random.choice(flower)))
     elif(facing=='e'):
         for xx in range(13):
             for zz in range(9):
-                if("air" in editor.getBlock([x-1-zz,y,z+1+xx]) and pro>random.random()):
+                if(pro>random.random()):
                     editor.placeBlock((x-1-zz,y,z+1+xx),Block(random.choice(flower)))
 
 
@@ -26,6 +26,7 @@ def honey_farm(editor,x,y,z,facing): #east or north
         for xx in range(15):
             for zz in range(10):
                 editor.placeBlock((x+xx,y-1,z+zz),Block("grass_block"))
+        flower_garden(editor,x,y,z,0.6,facing)
         for zz in [2,5,8]:
             for xx in [2,5]:
                 editor.placeBlock((x+xx,y-1,z+zz),Block("campfire",{"facing":"west","lit":"false"}))
@@ -49,7 +50,7 @@ def honey_farm(editor,x,y,z,facing): #east or north
         editor.placeBlock((x+14,y+1,z),Block("lantern"))
         editor.placeBlock((x+14,y+1,z+10),Block("lantern"))
 
-        flower_garden(editor,x,y,z,0.6,facing)
+
         command=command = f"summon minecraft:bee {x+7} {y+4} {z+5}"
         for i in range(3):
             editor.runCommand(command)
@@ -58,6 +59,7 @@ def honey_farm(editor,x,y,z,facing): #east or north
         for xx in range(15):
             for zz in range(10):
                 editor.placeBlock((x-zz,y-1,z+xx),Block("grass_block"))
+        flower_garden(editor,x,y,z,0.6,facing)
         for zz in [2,5,8]:
             for xx in [2,5]:
                 editor.placeBlock((x-zz,y-1,z+xx),Block("campfire",{"facing":"north","lit":"false"}))
@@ -81,7 +83,6 @@ def honey_farm(editor,x,y,z,facing): #east or north
         editor.placeBlock((x,y+1,z+14),Block("lantern"))
         editor.placeBlock((x-10,y+1,z+14),Block("lantern"))
 
-        flower_garden(editor,x,y,z,0.6,facing)
         command=command = f"summon minecraft:bee {x-5} {y+4} {z+7}"
         for i in range(3):
             editor.runCommand(command)

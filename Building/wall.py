@@ -1098,11 +1098,11 @@ def wall1(editor,x,y,z):
         for zz in range(8):
             for yy in range(18):
                 editor.placeBlock((x-17+xx,y+yy,z+27+zz),Block("air"))
-    command = f"summon boat {x+1} {y+1} {z+26}"
+    command = f"summon oak_boat {x+1} {y+1} {z+26}"
     editor.runCommand(command)
-    command = f"summon boat {x} {y+1} {z+26}"
+    command = f"summon oak_boat {x} {y+1} {z+26}"
     editor.runCommand(command)
-    command = f"summon boat {x-1} {y+1} {z+26}"
+    command = f"summon oak_boat {x-1} {y+1} {z+26}"
     editor.runCommand(command)
 
  
@@ -1119,11 +1119,11 @@ def wall2(editor,x,y,z):
         for yy in range(18):
             for zz in range(8):
                 editor.placeBlock((x-17+xx,y+yy,z-1-zz),Block("air"))
-    command = f"summon boat {x+1} {y+1} {z}"
+    command = f"summon oak_boat {x+1} {y+1} {z}"
     editor.runCommand(command)
-    command = f"summon boat {x} {y+1} {z}"
+    command = f"summon oak_boat {x} {y+1} {z}"
     editor.runCommand(command)
-    command = f"summon boat {x-1} {y+1} {z}"
+    command = f"summon oak_boat {x-1} {y+1} {z}"
     editor.runCommand(command)    
  
  

@@ -1,5 +1,5 @@
 from gdpc import Editor, Block, Transform, geometry
-
+import random
 
 #south
 #基底
@@ -1338,7 +1338,7 @@ def store3_n(editor,x,y,z):
     pillar_n(editor,x+2,y,z-2,"stone_bricks","spruce_slab","oak_log")
     girder_n(editor,x+1,y+5,z-1,"oak_log","spruce_slab","oak_slab")
     wall_n(editor,x+3,y,z-2,"smooth_quartz","acacia_trapdoor","oak_door","acacia_door")
-    tiles_n(editor,+1,y+8,z-5,"polished_andesite","stone_bricks","infested_chiseled_stone_bricks","stone_brick_slab","sea_lantern","spruce_slab")
+    tiles_n(editor,x+1,y+8,z-5,"polished_andesite","stone_bricks","infested_chiseled_stone_bricks","stone_brick_slab","sea_lantern","spruce_slab")
     furniture_n(editor,x+9,y,z-5,"lantern","barrel","blue_wall_banner","crafting_table","stripped_oak_log","potted_red_tulip","chest")
     book_n(editor,x+9,y,z-5,"enchanting_table","lectern","cartography_table","brewing_stand","bookshelf")
  
@@ -1347,7 +1347,7 @@ def store1_w(editor,z,y,x):
     pillar_w(editor,x+2,y,z-2,"stone_bricks","spruce_slab","oak_log")
     girder_w(editor,x+1,y+5,z-1,"oak_log","spruce_slab","oak_slab")
     wall_w(editor,x+3,y,z-2,"smooth_quartz","acacia_trapdoor","oak_door","acacia_door")
-    tiles_w(editor,+1,y+8,z-5,"polished_andesite","stone_bricks","infested_chiseled_stone_bricks","stone_brick_slab","sea_lantern","spruce_slab")
+    tiles_w(editor,x+1,y+8,z-5,"polished_andesite","stone_bricks","infested_chiseled_stone_bricks","stone_brick_slab","sea_lantern","spruce_slab")
     furniture_w(editor,x+9,y,z-5,"lantern","barrel","green_wall_banner","crafting_table","stripped_oak_log","potted_red_tulip","chest")
     food_w(editor,x+9,y,z-5,"stripped_oak_log","cake","melon","honeycomb_block","hay_block","smoker","cartography_table","loom","composter")
 
@@ -1434,3 +1434,39 @@ def rectanglesOverlap(r1, r2):
 
 
 
+def summon_animal(editor,coor,base_coor,rotation,animal,name=False):
+    if(rotation==0): #east
+        x=coor[0]
+        y=coor[1]
+        z=coor[2]
+    elif(rotation==1):#"north"
+        x=-coor[2]
+        y=coor[1]
+        z=coor[0]
+    elif(rotation==2):#"west"
+        x=-coor[0]
+        y=coor[1]
+        z=-coor[2]
+    elif(rotation==3):#"south"
+        x=coor[2]
+        y=coor[1]
+        z=-coor[0]
+    if(name==False):
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z}")
+    elif(name=="panda"):
+        panda_name=panda_name_list()
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {{CustomName:{panda_name}}}")
+    else:
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {{CustomName:{name}}}")
+
+    
+def panda_name_list():
+    #用途:パンダの名前を渡す
+
+    panda_name_list=["Meilin","Xiaobo","Baozi","Lingling","Xuebao","Zhuzhu","Lianhua","Feifei","Haitao","Qiqi",
+    "Yuelong","Meifeng","Xiaotao","Shuangshuang","Huahua","Zhenzhen","Dongmei","Huanhuan","Longwei","Yinyin",
+    "Xiangxiang","Tianbao","Nianzu","Lanlan","Chunhua","Guangli","Pingping","Rongrong","Mingliang","Yunbao",
+    "Zhaozhao","Haoran","Fengyi","Qiaoqiao","Jingjing","Xinxin","Lulu","Changle","Ruomei","Boqin"]
+
+    panda_name=random.choice((panda_name_list))
+    return panda_name
