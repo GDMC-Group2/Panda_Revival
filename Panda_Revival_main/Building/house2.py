@@ -1,5 +1,5 @@
 from gdpc import Editor, Block, Transform, geometry
-
+import random
 
 def light(editor,x,y,z): #c=cobblestone_wall,l=lantern
     editor.placeBlock((x,y,z),Block("cobblestone_wall"))
@@ -746,10 +746,7 @@ def bed_s(editor,x,y,z,q_id,w_id,e_id,r_id,t_id):
         editor.placeBlock((x-12,y,z-7-zz),Block(q_id,{"axis": "z"}))
         editor.placeBlock((x-9,y,z-7-zz),Block(e_id,{"facing": "east", "half": "bottom", "shape": "straight"}))
         editor.placeBlock((x-10,y,z-7-zz),Block(w_id,{"facing": "west", "part": "foot"}))
-        command = f"summon panda {x-10} {y+2} {z-7+zz}"
-        editor.runCommand(command)
-        editor.runCommand(command)
-        editor.runCommand(command)
+        summon_animal(editor,[x-10,y+2,z-7+zz],[0,0,0],0,"panda","panda")
     for yy in range(3):
         for zz in range(2):
             editor.placeBlock((x-6,y+yy,z-8-zz),Block(r_id))
@@ -1509,10 +1506,8 @@ def bed_n(editor,x,y,z,q_id,w_id,e_id,r_id,t_id):
         editor.placeBlock((x-12,y,z+7+zz),Block(q_id,{"axis": "z"}))
         editor.placeBlock((x-9,y,z+7+zz),Block(e_id,{"facing": "east", "half": "bottom", "shape": "straight"}))
         editor.placeBlock((x-10,y,z+7+zz),Block(w_id,{"facing": "west", "part": "foot"}))
-        command = f"summon panda {x-10} {y+2} {z+7-zz}"
-        editor.runCommand(command)
-        editor.runCommand(command)
-        editor.runCommand(command)
+        for i in range(3):
+            summon_animal(editor,[x-10,y+2,z+7-zz],[0,0,0],0,"panda","panda")
     for yy in range(3):
         for zz in range(2):
             editor.placeBlock((x-6,y+yy,z+8-zz),Block(r_id))
@@ -2272,10 +2267,8 @@ def bed_w(editor,x,y,z,q_id,w_id,e_id,r_id,t_id):
         editor.placeBlock((z+7+zz,y,x-12),Block(q_id,{"axis": "z"}))
         editor.placeBlock((z+7+zz,y,x-9),Block(e_id,{"facing": "south", "half": "bottom", "shape": "straight"}))
         editor.placeBlock((z+7+zz,y,x-10),Block(w_id,{"facing": "north", "part": "foot"}))
-        command = f"summon panda {z+7-zz} {y+2} {x-10}"
-        editor.runCommand(command)
-        editor.runCommand(command)
-        editor.runCommand(command)
+        for i in range(3):
+            summon_animal(editor,[z+7-zz,y+2,x-10],[0,0,0],0,"panda","panda")
     for yy in range(3):
         for zz in range(2):
             editor.placeBlock((z+8-zz,y+yy,x-6),Block(r_id))
@@ -3031,10 +3024,8 @@ def bed_e(editor,x,y,z,q_id,w_id,e_id,r_id,t_id):
         editor.placeBlock((z-7-zz,y,x-12),Block(q_id,{"axis": "z"}))
         editor.placeBlock((z-7-zz,y,x-9),Block(e_id,{"facing": "south", "half": "bottom", "shape": "straight"}))
         editor.placeBlock((z-7-zz,y,x-10),Block(w_id,{"facing": "north", "part": "foot"}))
-        command = f"summon panda {z-7+zz} {y+2} {x-10}"
-        editor.runCommand(command)
-        editor.runCommand(command)
-        editor.runCommand(command)
+        for i in range(3):
+            summon_animal(editor,[z-7+zz,y+2,x-10],[0,0,0],0,"panda","panda")
     for yy in range(3):
         for zz in range(2):
             editor.placeBlock((z-8+zz,y+yy,x-6),Block(r_id))
@@ -3098,3 +3089,39 @@ def rectanglesOverlap(r1, r2):
     else:
         return True
 
+def summon_animal(editor,coor,base_coor,rotation,animal,name=False):
+    if(rotation==0): #east
+        x=coor[0]
+        y=coor[1]
+        z=coor[2]
+    elif(rotation==1):#"north"
+        x=-coor[2]
+        y=coor[1]
+        z=coor[0]
+    elif(rotation==2):#"west"
+        x=-coor[0]
+        y=coor[1]
+        z=-coor[2]
+    elif(rotation==3):#"south"
+        x=coor[2]
+        y=coor[1]
+        z=-coor[0]
+    if(name==False):
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z}")
+    elif(name=="panda"):
+        panda_name=panda_name_list()
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {{CustomName:{panda_name}}}")
+    else:
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {{CustomName:{name}}}")
+
+    
+def panda_name_list():
+    #用途:パンダの名前を渡す
+
+    panda_name_list=["Meilin","Xiaobo","Baozi","Lingling","Xuebao","Zhuzhu","Lianhua","Feifei","Haitao","Qiqi",
+    "Yuelong","Meifeng","Xiaotao","Shuangshuang","Huahua","Zhenzhen","Dongmei","Huanhuan","Longwei","Yinyin",
+    "Xiangxiang","Tianbao","Nianzu","Lanlan","Chunhua","Guangli","Pingping","Rongrong","Mingliang","Yunbao",
+    "Zhaozhao","Haoran","Fengyi","Qiaoqiao","Jingjing","Xinxin","Lulu","Changle","Ruomei","Boqin"]
+
+    panda_name=random.choice((panda_name_list))
+    return panda_name

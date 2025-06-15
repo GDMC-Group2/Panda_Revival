@@ -1,5 +1,5 @@
 from gdpc import Editor, Block, Transform, geometry
-
+import random
 
 #south
 #基底
@@ -1434,3 +1434,39 @@ def rectanglesOverlap(r1, r2):
 
 
 
+def summon_animal(editor,coor,base_coor,rotation,animal,name=False):
+    if(rotation==0): #east
+        x=coor[0]
+        y=coor[1]
+        z=coor[2]
+    elif(rotation==1):#"north"
+        x=-coor[2]
+        y=coor[1]
+        z=coor[0]
+    elif(rotation==2):#"west"
+        x=-coor[0]
+        y=coor[1]
+        z=-coor[2]
+    elif(rotation==3):#"south"
+        x=coor[2]
+        y=coor[1]
+        z=-coor[0]
+    if(name==False):
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z}")
+    elif(name=="panda"):
+        panda_name=panda_name_list()
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {{CustomName:{panda_name}}}")
+    else:
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {{CustomName:{name}}}")
+
+    
+def panda_name_list():
+    #用途:パンダの名前を渡す
+
+    panda_name_list=["Meilin","Xiaobo","Baozi","Lingling","Xuebao","Zhuzhu","Lianhua","Feifei","Haitao","Qiqi",
+    "Yuelong","Meifeng","Xiaotao","Shuangshuang","Huahua","Zhenzhen","Dongmei","Huanhuan","Longwei","Yinyin",
+    "Xiangxiang","Tianbao","Nianzu","Lanlan","Chunhua","Guangli","Pingping","Rongrong","Mingliang","Yunbao",
+    "Zhaozhao","Haoran","Fengyi","Qiaoqiao","Jingjing","Xinxin","Lulu","Changle","Ruomei","Boqin"]
+
+    panda_name=random.choice((panda_name_list))
+    return panda_name

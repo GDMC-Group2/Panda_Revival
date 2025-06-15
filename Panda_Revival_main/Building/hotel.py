@@ -3398,35 +3398,29 @@ def floor_light(editor,x,y,z,u_id,g_id,c_id,r_id): #u_id=glowtone,g_id=glass,c_i
 def panda(editor,x,y,z):
     X=x
     Z=z+35    
-    command = f"summon panda {X} {y} {Z}"
     for i in range(4):
-        editor.runCommand(command)
+        summon_animal(editor,[X,y,Z],[0,0,0],0,"panda","panda")
     Z=z-35
-    command = f"summon panda {X} {y} {Z}"
-    for i in range(4):
-        editor.runCommand(command)
+    for i in range(4):        
+        summon_animal(editor,[X,y,Z],[0,0,0],0,"panda","panda")
     
     X=x
     Y=y+6
     Z=z
-    command = f"summon panda {X} {Y} {Z}"
     for i in range(4):
-        editor.runCommand(command)
+        summon_animal(editor,[X,Y,Z],[0,0,0],0,"panda","panda")
     X=x+8
     Y=y+22
-    command = f"summon panda {X} {Y} {Z}"
     for i in range(4):
-        editor.runCommand(command)
+        summon_animal(editor,[X,Y,Z],[0,0,0],0,"panda","panda")
     X=x
     Y=y+35
     Z=z
-    command = f"summon panda {X} {Y} {Z}"
     for i in range(4):
-        editor.runCommand(command)
+        summon_animal(editor,[X,Y,Z],[0,0,0],0,"panda","panda")
     Y=y+47
-    command = f"summon panda {X} {Y} {Z}"
     for i in range(4):
-        editor.runCommand(command)
+        summon_animal(editor,[X,Y,Z],[0,0,0],0,"panda","panda")
 
 def dragon_x1(editor,x,y,z,q_id,w_id,e_id,r_id,t_id,y_id):
     #z+1
@@ -3705,3 +3699,40 @@ def rectanglesOverlap(r1, r2):
        return True
     
 
+
+def summon_animal(editor,coor,base_coor,rotation,animal,name=False):
+    if(rotation==0): #east
+        x=coor[0]
+        y=coor[1]
+        z=coor[2]
+    elif(rotation==1):#"north"
+        x=-coor[2]
+        y=coor[1]
+        z=coor[0]
+    elif(rotation==2):#"west"
+        x=-coor[0]
+        y=coor[1]
+        z=-coor[2]
+    elif(rotation==3):#"south"
+        x=coor[2]
+        y=coor[1]
+        z=-coor[0]
+    if(name==False):
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z}")
+    elif(name=="panda"):
+        panda_name=panda_name_list()
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {{CustomName:{panda_name}}}")
+    else:
+        editor.runCommand(f"summon {animal} {base_coor[0]+x} {base_coor[1]+y} {base_coor[2]+z} {{CustomName:{name}}}")
+
+    
+def panda_name_list():
+    #用途:パンダの名前を渡す
+
+    panda_name_list=["Meilin","Xiaobo","Baozi","Lingling","Xuebao","Zhuzhu","Lianhua","Feifei","Haitao","Qiqi",
+    "Yuelong","Meifeng","Xiaotao","Shuangshuang","Huahua","Zhenzhen","Dongmei","Huanhuan","Longwei","Yinyin",
+    "Xiangxiang","Tianbao","Nianzu","Lanlan","Chunhua","Guangli","Pingping","Rongrong","Mingliang","Yunbao",
+    "Zhaozhao","Haoran","Fengyi","Qiaoqiao","Jingjing","Xinxin","Lulu","Changle","Ruomei","Boqin"]
+
+    panda_name=random.choice((panda_name_list))
+    return panda_name
