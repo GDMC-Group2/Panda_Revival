@@ -107,7 +107,9 @@ def main():
         hotel.hotel3(editor,x,y,z)
         under_entrance=[x,y+6,z+3]
         under_main(editor,under_entrance)
-
+    else: #都市が生成されない
+        print("There are no cities in this area!!!!")
+        exit()
     editor.flushBuffer()
     tpBook.tpBook(editor,search_area,building_dict_list,height_list,under_entrance)
     #
