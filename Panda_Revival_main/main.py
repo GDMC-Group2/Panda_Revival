@@ -3,7 +3,7 @@ from ExisitingSettlement import SearchBuildarea as SBA
 from time import *
 from terrian_adaptation import terrain, building_placement, city_planning, surface_reconstruction
 from Building import hotel
-from tools import getEnv
+from tools import getEnv ,tpBook
 from searchBlockinfo import SearchBlocks
 from under_building.under_main import under_main
 
@@ -43,6 +43,8 @@ def main():
     print(f"Build area is at position {area[0]}, {area[1]} with size {area[2]}, {area[3]}")
     command="gamerule doMobSpawning false"
     editor.runCommand(command)
+    command="gamerule doFireTick false"
+    editor.runCommand(command)
     # # ------------------------------------
     # if area[2] * area[3] >= 360000:
     #     new_area = []
@@ -73,6 +75,8 @@ def main():
         search_area = search_BuildArea.output(editor) # tuple in list
         print("search_area",search_area)
     isMaxArea = 1
+    building_dict_list=[]
+    height_list=[]
     for Area in search_area:
         HM_Area = heightmap[Area[0]:Area[0]+Area[2],Area[1]:Area[1]+Area[3]]
         HMWT_Area=heightmapWithTrees[Area[0]:Area[0]+Area[2],Area[1]:Area[1]+Area[3]]
@@ -84,7 +88,9 @@ def main():
             print('block_id is water...')
             print('change block_id to grass_block')
             block_id = 'grass_block'
+        sleep(5)
         height = terrain.setSameHeight(editor,HM_Area, ActualArea, block_id)
+        sleep(5)
         print("Surface BlockID: ", block_id)
         print("Biome Name:",Biome)
         buildingMap, buildingDict = city_planning.executeCityPlanning(Area,isMaxArea)
@@ -93,11 +99,18 @@ def main():
             x = ActualArea[0] + int(ActualArea[2]/2)
             y = height
             z = ActualArea[1] + int(ActualArea[3]/2)
-        isMaxArea = 0
+            isMaxArea = 0
+        building_dict_list.append(buildingDict)
+        height_list.append(height)
+        sleep(10) #httpのフリーズを防ぐための冷却
     if 'x' in locals() and 'y' in locals() and 'z' in locals():
         hotel.hotel3(editor,x,y,z)
-        under_main(editor,[x,y+6,z+3])
+        under_entrance=[x,y+6,z+3]
+        under_main(editor,under_entrance)
+
     editor.flushBuffer()
+    tpBook.tpBook(editor,search_area,building_dict_list,height_list,under_entrance)
+    #
 # setbuildarea -500 40 -500 500 100 500
 # setbuildarea 0 -70 0 200 200 200
 

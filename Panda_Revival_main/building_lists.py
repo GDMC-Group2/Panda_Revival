@@ -28,6 +28,10 @@ BuildingSizeLists = [
     'store1_w':(12,19),
     'store2_w':(12,19),
     'store3_w':(12,19),
+    'blacksmith_n':(10,8),
+    'blacksmith_s':(10,8),
+    'blacksmith_e':(8,10),
+    'blacksmith_w':(8,10),
     'tower':(31,31),
     'pavilion_n':(17,18),
     'pavilion_s':(17,18),
@@ -35,8 +39,8 @@ BuildingSizeLists = [
     'pavilion_w':(18,17),
     'well':(3,3),
     'farm':(43,43),
-    'honey_farm_n':(11,15),
-    'honey_farm_e':(15,11),
+    'honey_farm_n':(12,16),
+    'honey_farm_e':(16,12),
     'basement':(3,3)
  },
  {#1
@@ -56,8 +60,9 @@ BuildingSizeLists = [
     'house4_s':(13,18),
     'house4_e':(18,13),
     'house4_w':(18,13),
-    'honey_farm_n':(11,15), #test用
-    'honey_farm_e':(15,11),
+    
+    'honey_farm_n':(12,16), #test用
+    'honey_farm_e':(16,12),
     'basement':(3,3)
  },
  {#2
@@ -139,7 +144,12 @@ BuildingSizeLists = [
     'store3_e':(12,19),
     'store1_w':(12,19),
     'store2_w':(12,19),
-    'store3_w':(12,19)
+    'store3_w':(12,19),
+    'blacksmith_n':(10,8),
+    'blacksmith_s':(10,8),
+    'blacksmith_e':(8,10),
+    'blacksmith_w':(8,10),
+
  }
  ]
 
@@ -153,5 +163,6 @@ BuildingMaxNum = {
     'pavilion':1,
     'store':15,
     'well':1,
-    'honey_farm':4
+    'honey_farm':4,
+    'blacksmith':5
  }
