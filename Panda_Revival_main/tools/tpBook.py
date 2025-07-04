@@ -13,7 +13,7 @@ city_name_list=[
 
 
 
-def tpBook(editor,search_area,building_dict_list,height_list,under_entrance):
+def tpBook(editor,search_area,area,building_dict_list,height_list,under_entrance):
     coor=[]
     build_list=[]
     page_num=len(search_area)
@@ -33,9 +33,9 @@ def tpBook(editor,search_area,building_dict_list,height_list,under_entrance):
             coor=copy.copy(under_entrance)
         else:
             city_info_text=city_info_list[i]
-            coor[0]=search_area[i][0]+search_area[i][2]/2
+            coor[0]=area[0]+search_area[i][0]+search_area[i][2]/2
             coor[1]=height_list[i]+2
-            coor[2]=search_area[i][1]+search_area[i][3]/2
+            coor[2]=area[1]+search_area[i][1]+search_area[i][3]/2
 
         page_1=f"\'[[\"city name:{city_name_cand[i]}\\\\n\","
         page_2=f"{{\"text\":\"city coor:{coor[0]},{coor[1]},{coor[2]}\\\\n\",\"color\":\"#0000ff\",\"underlined\":true,"
@@ -122,7 +122,7 @@ def city_info(build_list):
                 text+=f"house:{house_count}\\\\n"
             if(store_count!=0):
                 text+=f"store:{store_count}\\\\n"
-            if(house_count==0 and store_count==0): 
+            if(len(text)):
                 text+=f"There are no pandas in this town!!!"
             city_info_list[i]=text
 
