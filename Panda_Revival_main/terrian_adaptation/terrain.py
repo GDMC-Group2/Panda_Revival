@@ -314,19 +314,20 @@ def setSameHeight(editor,heightmap, buildArea, block_id):
     begin_time=time()
     heightlist = [h2 for h1 in heightmap for h2 in h1]
     maxH = Counter(heightlist).most_common(1)[0][0]
+
     for x in range(len(heightmap)):
         for y in range(len(heightmap[0])):
             diff = maxH - heightmap[x][y]
             if diff > 0:
-                geometry.placeCuboid(editor,[buildArea[0]+x, heightmap[x][y], buildArea[1]+y],[buildArea[0]+x, heightmap[x][y]+diff, buildArea[1]+y],Block(block_id))
-                # for i in range(diff):
-                #     editor.placeBlock((buildArea[0]+x, heightmap[x][y]+i, buildArea[1]+y), Block(block_id))
+                for i in range(diff):
+                    # print(buildArea[0]+x, heightmap[x][y]+i, buildArea[1]+y)
+                    editor.placeBlock((buildArea[0]+x, heightmap[x][y]+i, buildArea[1]+y), Block(block_id))
             elif diff <= 0:
                 for i in range(-diff):
                     # print(buildArea[0]+x, heightmap[x][y]+i, buildArea[1]+y)
                     editor.placeBlock((buildArea[0]+x, heightmap[x][y]-1-i, buildArea[1]+y), Block('air'))
-                editor.placeBlock((buildArea[0]+x, maxH, buildArea[1]+y), Block('air'))
-                editor.placeBlock((buildArea[0]+x, maxH-1, buildArea[1]+y), Block(block_id))
+                editor.placeBlock((buildArea[0]+x, heightmap[x][y]-1+diff, buildArea[1]+y), Block(block_id))
+
     editor.flushBuffer()
     end_time=time()
     print('setSameHeight done')
