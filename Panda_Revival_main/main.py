@@ -111,7 +111,7 @@ def main():
         print("There are no cities in this area!!!!")
         exit()
     editor.flushBuffer()
-    tpBook.tpBook(editor,search_area,building_dict_list,height_list,under_entrance)
+    tpBook.tpBook(editor,search_area,area,building_dict_list,height_list,under_entrance)
     #
 # setbuildarea -500 40 -500 500 100 500
 # setbuildarea 0 -70 0 200 200 200
